@@ -17,10 +17,11 @@ html(lang="en")
       p "maid", "waifu", "marin-kitagawa", "mori-calliope", "raiden-shogun", "oppai","selfies", "uniform", "kamisato-ayaka" #[strong NSFW FROM HERE] "ass", "hentai", "milf", "oral", "paizuri", "ecchi", "ero"
       main
         div(class="search-bar")
-          input(type="text" name="waifu" class="search-input")
-          button(type="button" class="search-button") #[STRONG Look it up!] 
+          form(action="/submit" method="POST")
+            input(type="text" name="waifu" id='waifu' class="search-input")
+            button(type="submit" class="search-button") #[STRONG Look it up!]   
         ul(class="waifu-list")
-      script(src="js/script.js") 
+          script(src="js/script.js") 
           
 
 //
