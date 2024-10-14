@@ -30,6 +30,7 @@ app.get("/", (req, res) => {
 app.post("/submit", (req, res) => {
   const userInput = req.body.waifu;
   console.log("User input:", userInput);
+  res.send("Input received");
 });
 
 eventEmitter.emit("start");

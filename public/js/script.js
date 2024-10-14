@@ -4,58 +4,73 @@ const form = document.querySelector("form");
 
 async function fetchWaifu() {
   console.log("fetching");
-  var baseUrl = "https://api.waifu.im/search";
-  const parameter = document
-    .querySelector(".search-input")
-    .value.toLowerCase()
-    .split(" ")[0];
 
-   console.log(parameter);
-    
+  var baseUrl = "https://api.waifu.im/search";
+
+  const parameterElement = document.querySelector(".search-input");
+  const parameter = parameterElement.value.trim().toLowerCase().split(" ")[0];
+
+  console.log("Parameter:", parameter);
+
+  if (!parameter) {
+    alert("Please enter a valid search term!");
+    return;
+  }
+
+  let params = {
+    included_tags: parameter,
+  };
+  
+  let queryParams = new URLSearchParams(params);
+
   try {
-    let params = {
-      included_tags: parameter,
-    };
-    let queryParams = new URLSearchParams();
-    for (const key in params) {
-      if (Array.isArray(params[key])) {
-        params[key].forEach((value) => {
-          queryParams.append(key, value);
-        });
-      } else {
-        queryParams.set(key, params[key]);
-      }
-    }
     let response = await fetch(`${baseUrl}?${queryParams.toString()}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     let result = await response.json();
 
     let list = document.querySelector(".waifu-list");
     let item = document.createElement("li");
-    item.id = count;
     let img = document.createElement("img");
-    let close = document.createElement("button");
     let buttons = document.createElement("div");
+    let close = document.createElement("button");
     let edit = document.createElement("button");
+
     buttons.classList.add("item-buttons");
     close.innerHTML = '<i class="fa-2xl fa-solid fa-circle-xmark"></i>';
     edit.innerHTML = '<i class="fa-2xl fa-solid fa-pencil"></i>';
-    img.src = result["images"][0]["url"];
-    item.classList.add("list-item");
+
     close.classList.add("image-button");
     edit.classList.add("image-button");
+    item.classList.add('list-item');
+
     close.addEventListener("click", () => removeItem(item));
     edit.addEventListener("click", () => activateUpdate(img));
+
     item.appendChild(img);
     buttons.appendChild(edit);
     buttons.appendChild(close);
     item.appendChild(buttons);
     list.appendChild(item);
 
-    count += 1;
+    // Adding a slight delay before setting the image URL
+    setTimeout(() => {
+      img.src = result["images"][0]["url"];
+      img.onload = function() {
+        console.log("Image fully loaded");
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+      };
+      console.log("Image URL set to:", img.src);
+    }, 100);
+
   } catch (error) {
-    alert("An error ocurred while retrieving the image: " + error);
+    console.error("Fetch error:", error);
+    alert("Error: " + error.message + " Here's parameter: " + parameter);
   }
 }
+
+
+
 
 function removeItem(item) {
   let list = document.querySelector(".waifu-list");
@@ -105,13 +120,17 @@ function activateUpdate(image) {
 
 function init() {
   var count = 1;
-  document
-    .querySelector(".search-button")
-    .addEventListener("click", (event) => {
-      event.preventDefault();
-      fetchWaifu();
+    document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('.search-button');
+    const form = document.querySelector('form');
+  
+    button.addEventListener('click', async (event) => {
+      event.preventDefault(); 
+      await fetchWaifu();
       form.submit();
     });
+  });
 }
 
 init();
+

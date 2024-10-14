@@ -42,6 +42,12 @@ ul {
   margin-top: 2em;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
 .search-input {
   background-color: var(--dark-1);
   color: var(--light-1);
@@ -74,7 +80,7 @@ ul {
 
 .list-item {
   max-width: 20em;
-  max-heigth: 20em;
+  height: auto;
   padding: 1em;
   border: 0.2em solid var(--light-1);
 }
