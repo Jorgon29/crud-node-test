@@ -1,8 +1,8 @@
 var count;
 const form = document.querySelector("form");
 
-
 async function fetchWaifu() {
+
   console.log("fetching");
 
   var baseUrl = "https://api.waifu.im/search";
@@ -69,9 +69,6 @@ async function fetchWaifu() {
   }
 }
 
-
-
-
 function removeItem(item) {
   let list = document.querySelector(".waifu-list");
   list.removeChild(item);
@@ -121,8 +118,8 @@ function activateUpdate(image) {
 function init() {
   var count = 1;
     document.addEventListener('DOMContentLoaded', () => {
-    const button = document.querySelector('.search-button');
     const form = document.querySelector('form');
+    const button = document.querySelector('.search-button');
   
     button.addEventListener('click', async (event) => {
       event.preventDefault(); 
